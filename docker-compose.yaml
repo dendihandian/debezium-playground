@@ -18,22 +18,40 @@ services:
     build:
       context: ./docker/kafka
       dockerfile: ./Dockerfile
-    links:
-      - zookeeper:zookeeper
     ports:
       - 9092:9092
+    environment:
+      - ZOOKEEPER_CONNECT=zookeeper:2181
+    links:
+      - zookeeper
     depends_on:
       - zookeeper
+
+  connect:
+    build:
+      context: ./docker/connect
+      dockerfile: ./Dockerfile
+    ports:
+     - 8083:8083
+    links:
+     - kafka
+     - mysql
+    environment:
+     - BOOTSTRAP_SERVERS=kafka:9092
+     - GROUP_ID=1
+     - CONFIG_STORAGE_TOPIC=my_connect_configs
+     - OFFSET_STORAGE_TOPIC=my_connect_offsets
+     - STATUS_STORAGE_TOPIC=my_connect_statuses
 
   mysql:
     build:
       context: ./docker/mysql
       dockerfile: ./Dockerfile
+    ports:
+      - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - mysql_volume:/var/lib/mysql
-    ports:
-      - 3306:3306
