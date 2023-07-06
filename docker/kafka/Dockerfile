@@ -1,0 +1,1 @@
+FROM debezium/kafka:2.3
