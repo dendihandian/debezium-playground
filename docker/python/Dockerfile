@@ -1,8 +1,8 @@
-FROM python:3.9.16-alpine3.17
+FROM python:3.10.12-alpine3.18
 
 COPY ./src /python/src
 
-RUN pip install pymysql
+RUN pip install cryptography pymysql Faker
 
 WORKDIR /python/src
 RUN touch /python/service.log
