@@ -1,8 +1,4 @@
 from utils.mysql_client import mysql_conn
-from faker import Faker
-from datetime import datetime
-from faker.providers import date_time
-from faker.providers import lorem
 
 # Create a cursor object to execute SQL queries
 cursor = mysql_conn.cursor()
